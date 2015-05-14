@@ -13,14 +13,15 @@ Vagrant.configure(2) do |config|
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = ["./cookbooks", "./site-cookbooks"]
     chef.json = {
-      nginx: {
-        env: ["php"]
+      git: {
+        version: "2.4.0",
+        url: "https://www.kernel.org/pub/software/scm/git/git-2.4.0.tar.gz",
+        checksum: "d58c766a80d86a5e1846c04c74618e98bfec158734fa1a8904c64740b72b511a"
       }
     }
     chef.run_list = %w[
       recipe[yum-epel]
-      recipe[nginx]
-      recipe[php-env]
+      recipe[git::source]
       recipe[ruby-env]
     ]
   end
