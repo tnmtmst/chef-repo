@@ -91,6 +91,7 @@ end
 
 bash "global Ruby" do
   user  node['ruby-env']['user']
+  environment 'RBENV_ROOT' => "/usr/local/rbenv"
   code <<-EOC
     /usr/local/rbenv/bin/rbenv global #{node['ruby-env']['version']}
   EOC
