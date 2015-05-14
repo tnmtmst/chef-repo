@@ -87,3 +87,10 @@ execute "rbenv install #{node['ruby-env']['version']}" do
   group node['ruby-env']['group']
   not_if { File.exists?("/usr/local/rbenv/versions/#{node['ruby-env']['version']}") }
 end
+
+bash "global Ruby" do
+  user  node['ruby-env']['user']
+  code <<-EOC
+    /usr/local/rbenv/bin/rbenv global #{node['ruby-env']['version']}
+  EOC
+end
