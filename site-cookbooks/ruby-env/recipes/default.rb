@@ -6,7 +6,7 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-%w{git openssl-devel sqlite-devel gcc-c++ glibc-headers readline libyaml-devel readline-devel zlib zlib-devel}.each do |pkg|
+%w{openssl-devel sqlite-devel gcc-c++ glibc-headers readline libyaml-devel readline-devel zlib zlib-devel}.each do |pkg|
   package pkg do
     action :install
   end
