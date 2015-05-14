@@ -85,6 +85,7 @@ execute "rbenv install #{node['ruby-env']['version']}" do
   command "/usr/local/rbenv/bin/rbenv install #{node['ruby-env']['version']}"
   user  node['ruby-env']['user']
   group node['ruby-env']['group']
+  environment 'RBENV_ROOT' => "/usr/local/rbenv"
   not_if { File.exists?("/usr/local/rbenv/versions/#{node['ruby-env']['version']}") }
 end
 
