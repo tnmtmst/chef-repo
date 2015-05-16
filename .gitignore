@@ -2,4 +2,4 @@
 .chef/
 .vagrant/
 Berksfile.lock
-.ttl
+*.ttl
