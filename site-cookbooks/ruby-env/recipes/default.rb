@@ -12,6 +12,7 @@
   end
 end
 
+# rbenv
 git "/usr/local/rbenv" do
   repository node["ruby-env"]["rbenv_url"]
   action :sync
@@ -19,18 +20,11 @@ git "/usr/local/rbenv" do
   group node['ruby-env']['group']
 end
 
-bash "add PATH to rbenv" do
-  not_if "grep rbenv /etc/profile"
-
-  code <<-EOC
-echo '
-# rbenv PATH
-export RBENV_ROOT="/usr/local/rbenv"
-export PATH="${RBENV_ROOT}/bin:${PATH}"
-eval "$(rbenv init -)"
-' >> /etc/profile
-    source /etc/profile
-  EOC
+template "/etc/profile.d/rbenv.sh" do
+  source "rbenv.sh.erb"
+  mode   0644
+  owner  node['ruby-env']['user']
+  group  node['ruby-env']['group']
 end
 
 directory "/usr/local/rbenv/plugins" do
@@ -84,15 +78,13 @@ end
 execute "rbenv install #{node['ruby-env']['version']}" do
   command "/usr/local/rbenv/bin/rbenv install #{node['ruby-env']['version']}"
   user  node['ruby-env']['user']
-  group node['ruby-env']['group']
   environment 'RBENV_ROOT' => "/usr/local/rbenv"
   not_if { File.exists?("/usr/local/rbenv/versions/#{node['ruby-env']['version']}") }
 end
 
-bash "global Ruby" do
+# Set global Ruby version
+execute "rbenv global #{node['ruby-env']['version']}" do
+  command "/usr/local/rbenv/bin/rbenv global #{node['ruby-env']['version']}"
   user  node['ruby-env']['user']
   environment 'RBENV_ROOT' => "/usr/local/rbenv"
-  code <<-EOC
-    /usr/local/rbenv/bin/rbenv global #{node['ruby-env']['version']}
-  EOC
 end
