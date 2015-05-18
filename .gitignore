@@ -3,3 +3,4 @@
 .vagrant/
 Berksfile.lock
 *.ttl
+work/
